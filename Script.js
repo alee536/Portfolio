@@ -92,38 +92,40 @@ function animateSections() {
 function setupContactForm() {
     const form = document.querySelector('#contact form');
     if (form) {
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // Get form data
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const subject = document.getElementById('subject').value;
-            const message = document.getElementById('message').value;
-            
-            // Validate form
-            if (!name || !email || !subject || !message) {
-                alert('Please fill in all fields');
-                return;
-            }
-            
-            // Form submission animation
             const button = form.querySelector('button[type="submit"]');
-            const originalText = button.textContent;
+            const originalText = button.innerHTML;
             
             button.disabled = true;
             button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
             
-            // Simulate form submission (replace with actual submission)
-            setTimeout(() => {
-                button.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
-                form.reset();
+            try {
+                const formData = new FormData(form);
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'Accept': 'application/json' }
+                });
                 
-                setTimeout(() => {
-                    button.disabled = false;
-                    button.textContent = originalText;
-                }, 3000);
-            }, 2000);
+                if (response.ok) {
+                    button.innerHTML = '<i class="fas fa-check"></i> Sent!';
+                    form.reset();
+                    setTimeout(() => {
+                        button.disabled = false;
+                        button.innerHTML = originalText;
+                    }, 3000);
+                    alert('Message sent successfully!');
+                } else {
+                    throw new Error('Submission failed');
+                }
+            } catch (error) {
+                button.innerHTML = originalText;
+                button.disabled = false;
+                alert('Error sending message. Please try again.');
+                console.error(error);
+            }
         });
     }
 }
