@@ -13,15 +13,12 @@
     <link rel="stylesheet" href="Style.css">
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200" x-data="{ darkMode: false, isOpen: false }">
-    <!-- Custom Cursor -->
     <div class="cursor-blob hidden md:block"></div>
 
-    <!-- Header -->
     <header class="fixed w-full bg-white dark:bg-gray-900 shadow-sm z-50" x-data="{ scrolled: false }" @scroll.window="scrolled = window.pageYOffset > 10">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center" :class="{ 'py-2': scrolled, 'py-4': !scrolled }">
             <a href="#home" class="text-2xl font-bold text-gradient">DevPortfolio</a>
             
-            <!-- Desktop Navigation -->
             <nav class="hidden md:flex space-x-8">
                 <a href="#home" class="nav-link font-medium">Home</a>
                 <a href="#about" class="nav-link font-medium">About</a>
@@ -30,14 +27,12 @@
                 <a href="#contact" class="nav-link font-medium">Contact</a>
             </nav>
             
-            <!-- Mobile Menu Button -->
             <button @click="isOpen = !isOpen" class="md:hidden focus:outline-none">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>
             
-            <!-- Dark Mode Toggle -->
             <button @click="darkMode = !darkMode; document.documentElement.classList.toggle('dark')" class="focus:outline-none ml-4">
                 <svg x-show="!darkMode" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
@@ -48,7 +43,6 @@
             </button>
         </div>
         
-        <!-- Mobile Navigation -->
         <div x-show="isOpen" class="md:hidden bg-white dark:bg-gray-900 shadow-md" @click.away="isOpen = false">
             <div class="container mx-auto px-4 py-2 flex flex-col space-y-2">
                 <a href="#home" @click="isOpen = false" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">Home</a>
@@ -60,7 +54,6 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section id="home" class="pt-24 pb-16 md:pt-32 md:pb-24">
         <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
             <div class="md:w-1/2 mb-8 md:mb-0">
@@ -95,7 +88,6 @@
         </div>
     </section>
 
-    <!-- About Section -->
     <section id="about" class="py-16 bg-gray-100 dark:bg-gray-800">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold mb-2 text-center">About Me</h2>
@@ -107,16 +99,17 @@
                 </div>
                 <div class="md:w-2/3 md:pl-12 text-justify">
                     <p class="text-lg mb-4 text-gray-600 dark:text-gray-400">
-                        Hello! I'm a dedicated and detail-oriented web developer with hands-on experience in both frontend and backend technologies. I specialize in creating responsive, user-centric interfaces using HTML, CSS, JavaScript, Bootstrap, and Tailwind CSS, while also building robust backend systems with Django and Flask. I have also experience with NetSuite Advance HTML/PDF templetes customization.
-
-
-
-                    <p class="text-lg mb-6 text-gray-600 dark:text-gray-400">
-                        I bring Software Quality Assurance (SQA) expertise — including test planning, test case design, bug tracking, and manual testing using tools like JIRA and Postman.
+                        Hi, I'm Ali Hassan — a passionate web developer who turns ideas into fast, beautiful, and reliable websites.
+                        I specialize in crafting modern, responsive frontends with HTML, CSS, JavaScript, Tailwind CSS & Bootstrap, and building solid, secure backends using Django and Flask
                     </p>
                     <p class="text-lg mb-6 text-gray-600 dark:text-gray-400">
-                    
-                        I also contribute to process improvement, ensuring development aligns with quality standards and best practices throughout the software development lifecycle. My approach blends proactive QA strategies with solid development skills to deliver reliable, maintainable, and high-performing applications.
+                        I also bring real-world experience customizing NetSuite Essentials (SuiteScripts + advanced HTML/PDF templates) and I’m serious about quality — planning tests, catching bugs early, and delivering polished work every time (JIRA, Postman, best practices).
+
+                    </p>
+                    <p class="text-lg mb-6 text-gray-600 dark:text-gray-400">
+                        My goal:
+
+                        Build applications that look stunning, perform smoothly, and make your life easier — without the usual stress or surprises.
                     </p>
                     <div class="flex flex-wrap gap-4">
                         <div class="flex items-center">
@@ -140,14 +133,12 @@
         </div>
     </section>
 
-    <!-- Skills Section -->
     <section id="skills" class="py-16">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold mb-2 text-center">My Skills</h2>
             <div class="w-24 h-1 bg-indigo-600 mx-auto mb-8 animated-line"></div>
             
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-<!--                 SQA  -->
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center skill-icon">
                     <i class="fas fa-shield-alt text-6xl mb-4 text-purple-500"></i>
                     <h3 class="text-xl font-semibold">Quality Assurance</h3>
@@ -155,7 +146,6 @@
                         <div class="bg-purple-500 h-2.5 rounded-full" style="width: 65%"></div>
                     </div>
                 </div>
-                <!-- html -->
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center skill-icon">
                     <i class="fab fa-html5 text-6xl mb-4 custom-html-logo" ></i>
                     <h3 class="text-xl font-semibold">HTML5</h3>
@@ -163,7 +153,6 @@
                         <div class="html-skill-bar h-2.5 rounded-full" style="width: 90%"></div>
                     </div>
                 </div>
-                <!-- css  -->
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center skill-icon">
                     <i class="fab fa-css3-alt text-6xl mb-4 text-blue-500"></i>
                     <h3 class="text-xl font-semibold">CSS3</h3>
@@ -172,7 +161,6 @@
                     </div>
                 </div>
 
-    <!-- Sass -->
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center skill-icon">
                     <i class="fab fa-sass text-6xl mb-4 text-pink-500"></i>
                     <h3 class="text-xl font-semibold">Sass</h3>
@@ -180,7 +168,6 @@
                         <div class="bg-pink-500 h-2.5 rounded-full" style="width: 75%"></div>
                     </div>
                 </div>
-                <!-- js  -->
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center skill-icon">
                     <i class="fab fa-js text-6xl mb-4 text-yellow-500"></i>
                     <h3 class="text-xl font-semibold">JavaScript</h3>
@@ -188,7 +175,6 @@
                         <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 85%"></div>
                     </div>
                 </div>
-       <!-- Bootstrap -->
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center skill-icon">
                     <i class="fab fa-bootstrap text-6xl mb-4 text-purple-500"></i>
                     <h3 class="text-xl font-semibold">Bootstrap</h3>
@@ -196,7 +182,6 @@
                         <div class="bg-purple-500 h-2.5 rounded-full" style="width: 90%"></div>
                     </div>
                 </div>
-    <!-- Django -->
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center skill-icon">
                     <i class="fab fa-python text-6xl mb-4 text-blue-400"></i>
                     <h3 class="text-xl font-semibold">Django</h3>
@@ -205,7 +190,6 @@
                     </div>
                 </div>
                 
-          <!-- Git -->
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center skill-icon">
                     <i class="fab fa-git-alt text-6xl mb-4 text-red-500"></i>
                     <h3 class="text-xl font-semibold">Git</h3>
@@ -218,7 +202,6 @@
         </div>
     </section>
 
-<!-- Projects Section -->
     <section id="projects" class="py-16 bg-gray-100 dark:bg-gray-800">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold mb-2 text-center">My Projects</h2>
@@ -226,8 +209,6 @@
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-                
-<!-- Project 1 -->
                 <div class="bg-white dark:bg-gray-900 rounded-lg overflow-hidden shadow-lg project-card">
                     <img src="./Assets/VisionAI-obj.png" alt="VisionAI App" class="w-full h-50 object-cover">
                     <div class="p-6">
@@ -256,9 +237,6 @@
                 </div>
                 
 
-                
-
-<!-- Project 2 -->
                 <div class="bg-white dark:bg-gray-900 rounded-lg overflow-hidden shadow-lg project-card">
                     <img src="./Assets/weather-app.png" alt="Weather App" class="w-full h-50 object-cover">
                     <div class="p-6">
@@ -283,7 +261,6 @@
                         </div>
                     </div>
                 </div>
-<!-- Project 3 -->
                 <div class="bg-white dark:bg-gray-900 rounded-lg overflow-hidden shadow-lg project-card">
                     <img src="./Assets/fitness-app.webp" alt="Fitness Tracker" class="w-full h-50 object-cover">
                     <div class="p-6">
@@ -310,7 +287,6 @@
                 </div>
 
 
-<!-- Project 4 -->
                 <div class="bg-white dark:bg-gray-900 rounded-lg overflow-hidden shadow-lg project-card">
                     <img src="./Assets/igor-miske-JVSgcV8_vb4-unsplash.jpg" alt="E-commerce Website" class="w-full h-50 object-cover">
                     <div class="p-6">
@@ -345,19 +321,12 @@
          </div>
     </section>
 
-    <!-- Testimonials Section -->
-<!-- Testimonials Section -->
     <section class="py-16">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold mb-2 text-center">Client Testimonials</h2>
                 <div class="w-24 h-1 bg-indigo-600 mx-auto mb-8 animated-line"></div>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     
-    <!-- Testimonial 1 -->
-
-
-
-
                     <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
                         <div class="flex items-center mb-4">
                             <div class="text-yellow-400 flex">
@@ -383,7 +352,6 @@
 
 
 
-<!-- Testimonial 2 -->
                     <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
                         <div class="flex items-center mb-4">
                             <div class="text-yellow-400 flex">
@@ -411,13 +379,11 @@
             </div>
         </section>
 
-    <!-- Contact Section -->
     <section id="contact" class="py-16 bg-gray-100 dark:bg-gray-800">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold mb-2 text-center">Contact Me</h2>
             <div class="w-24 h-1 bg-indigo-600 mx-auto mb-8"></div>
             <div class="flex flex-col md:flex-row gap-8">
-                <!-- Contact Info -->
                 <div class="md:w-1/3">
                     <div class="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md mb-6">
                         <div class="flex items-center mb-4">
@@ -456,22 +422,21 @@
                     </div>
 
                     <div class="mt-6 flex space-x-4">
-                        <a href="#" class="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center hover:bg-indigo-700 transition duration-300">
+                        <a href="https://www.linkedin.com/in/alee-hassan-khichi/" class="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center hover:bg-indigo-700 transition duration-300">
                             <i class="fab fa-linkedin-in"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center hover:bg-indigo-700 transition duration-300">
+                        <a href="https://github.com/ali0454hassan" class="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center hover:bg-indigo-700 transition duration-300">
                             <i class="fab fa-github"></i>
                         </a>
                         <a href="#" class="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center hover:bg-indigo-700 transition duration-300">
                             <i class="fab fa-twitter"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center hover:bg-indigo-700 transition duration-300">
-                            <i class="fab fa-dribbble"></i>
+                        <a href="https://web.facebook.com/aleehassankhichi" class="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center hover:bg-indigo-700 transition duration-300">
+                            <i class="fab fa-facebook-f"></i>
                         </a>
                     </div>
                 </div>
 
-                <!-- Contact Form – now functional with Web3Forms -->
                 <div class="md:w-2/3">
                     <div class="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
                         <form action="https://api.web3forms.com/submit" method="POST">
@@ -541,7 +506,6 @@
         </div>
     </section>
 
- <!-- Footer -->
         <footer class="py-8 bg-gray-900 text-white">
             <div class="container mx-auto px-4">
                 <div class="flex flex-col md:flex-row justify-between items-center">
@@ -560,18 +524,16 @@
                 <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
                                 <p class="text-gray-400">© 2025 Ali Hassan. All rights reserved.</p>
                                 <div class="mt-4 md:mt-0">
-                                    <p class="text-gray-400">Designed & Built with <i class="fas fa-heart text-red-500"></i></p>
+                                    <p class="text-gray-400">Designed & Built by Me also <i class="fas fa-heart text-red-500"></i></p>
                                 </div>
                 </div>
             </div>
         </footer>
 
-    <!-- Back to Top Button -->
         <a href="#home" class="fixed bottom-8 right-8 w-12 h-12 bg-indigo-600 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-indigo-700 transition duration-300 z-50 back-to-top">
             <i class="fas fa-arrow-up"></i>
         </a>
 
-    <!-- JavaScript -->
     <script src="Script.js"></script>
 
 </body>
