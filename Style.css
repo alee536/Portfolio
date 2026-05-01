@@ -39,6 +39,25 @@ input:focus, textarea:focus {
     box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
 
+/* Disable focus styles for the header search inputs and buttons */
+#site-search-input,
+#site-search-input-mobile,
+#site-search-button,
+#site-search-button-mobile {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* Also remove any focus-visible default outlines for these elements */
+#site-search-input:focus, #site-search-input-mobile:focus,
+#site-search-button:focus, #site-search-button-mobile:focus,
+#site-search-input:focus-visible, #site-search-input-mobile:focus-visible,
+#site-search-button:focus-visible, #site-search-button-mobile:focus-visible {
+    box-shadow: none !important;
+    outline: none !important;
+}
+
 /* Testimonial card hover effects */
 .testimonial-card {
     transition: transform 0.3s ease;

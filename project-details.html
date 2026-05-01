@@ -7,6 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.12.0/cdn.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script src="projects-data.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
     <style>
@@ -71,40 +72,36 @@
             opacity: 1;
             visibility: visible;
         }
+        /* Gallery: ensure carousel fills width and images are full-size */
+        #project-gallery .relative { width: 100%; }
+        #project-gallery #carousel-viewport { width: 100%; }
+        #project-gallery .carousel-item { padding-left: 0; padding-right: 0; }
+        #project-gallery .carousel-item img { width: 100%; height: auto; display: block; }
+        /* Disable focus outlines/border on search inputs/buttons */
+        #site-search-input,
+        #site-search-input-mobile,
+        #site-search-button,
+        #site-search-button-mobile {
+            outline: none !important;
+            box-shadow: none !important;
+            border: none !important;
+        }
+        #site-search-input:focus,
+        #site-search-input-mobile:focus,
+        #site-search-button:focus,
+        #site-search-button-mobile:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
         
-        /* Add this to your <style> tag in <head> */
-        body.dark-mode,
-        .dark-mode .navbar {
-          background-color: #181a1b !important;
-          color: #ffffff !important;
-        }
-        .dark-mode .navbar,
-        .dark-mode .navbar-brand,
-        .dark-mode .nav-link {
-          color: #ffffff !important;
-        }
-        .dark-mode .bg-white,
-        .dark-mode .bg-light,
-        .dark-mode .card,
-        .dark-mode .rounded-lg,
-        .dark-mode .shadow-lg {
-          background-color: #23272b !important;
-          color: #ffffff !important;
-        }
-        .dark-mode .text-gradient {
-          background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
     </style>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200" x-data="{ darkMode: false, isOpen: false }">
+<body class="bg-gray-50 text-gray-800" x-data="{ isOpen: false }">
     <!-- Custom Cursor -->
     <div class="cursor-blob hidden md:block"></div>
 
     <!-- Header -->
-    <header class="fixed w-full bg-white dark:bg-gray-900 shadow-sm z-50" x-data="{ scrolled: false }" @scroll.window="scrolled = window.pageYOffset > 10">
+    <header class="fixed w-full bg-white shadow-sm z-50" x-data="{ scrolled: false }" @scroll.window="scrolled = window.pageYOffset > 10">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center" :class="{ 'py-2': scrolled, 'py-4': !scrolled }">
             <a href="index.html" class="text-2xl font-bold text-gradient">DevPortfolio</a>
             
@@ -123,21 +120,25 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>
-            
-            <!-- Dark Mode Toggle -->
-            <button id="darkModeToggle" class="focus:outline-none ml-4" title="Toggle Dark Mode">
-                <i id="darkModeIcon" class="fas fa-moon text-xl"></i>
-            </button>
+
+            <div class="hidden md:flex items-center ml-6 border-b border-gray-300">
+                <input id="site-search-input" type="text" placeholder="Search..." class="w-44 bg-transparent px-2 py-1 text-sm outline-none" />
+                <button id="site-search-button" type="button" class="ml-3 text-sm font-semibold text-indigo-600 hover:text-indigo-700">Search</button>
+            </div>
         </div>
         
         <!-- Mobile Navigation -->
-        <div x-show="isOpen" class="md:hidden bg-white dark:bg-gray-900 shadow-md" @click.away="isOpen = false">
+        <div x-show="isOpen" class="md:hidden bg-white shadow-md" @click.away="isOpen = false">
             <div class="container mx-auto px-4 py-2 flex flex-col space-y-2">
-                <a href="index.html#home" @click="isOpen = false" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">Home</a>
-                <a href="index.html#about" @click="isOpen = false" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">About</a>
-                <a href="index.html#skills" @click="isOpen = false" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">Skills</a>
-                <a href="index.html#projects" @click="isOpen = false" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">Projects</a>
-                <a href="index.html#contact" @click="isOpen = false" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">Contact</a>
+                <div class="flex items-center border-b border-gray-300 mb-2">
+                    <input id="site-search-input-mobile" type="text" placeholder="Search..." class="w-full bg-transparent px-2 py-1 text-sm outline-none" />
+                    <button id="site-search-button-mobile" type="button" class="ml-3 text-sm font-semibold text-indigo-600 hover:text-indigo-700">Search</button>
+                </div>
+                <a href="index.html#home" @click="isOpen = false" class="py-2 px-4 hover:bg-gray-100 rounded-md">Home</a>
+                <a href="index.html#about" @click="isOpen = false" class="py-2 px-4 hover:bg-gray-100 rounded-md">About</a>
+                <a href="index.html#skills" @click="isOpen = false" class="py-2 px-4 hover:bg-gray-100 rounded-md">Skills</a>
+                <a href="index.html#projects" @click="isOpen = false" class="py-2 px-4 hover:bg-gray-100 rounded-md">Projects</a>
+                <a href="index.html#contact" @click="isOpen = false" class="py-2 px-4 hover:bg-gray-100 rounded-md">Contact</a>
             </div>
         </div>
     </header>
@@ -147,14 +148,14 @@
         <div class="container mx-auto px-4">
             <!-- Back Button -->
             <div class="mb-8">
-                <a href="index.html#projects" class="inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition duration-300">
+                <a href="index.html#projects" class="inline-flex items-center text-indigo-600 hover:text-indigo-700 transition duration-300">
                     <i class="fas fa-arrow-left mr-2"></i>
                     Back to Projects
                 </a>
             </div>
 
             <!-- Project Header with dark overlay on image -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden mb-8 relative">
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden mb-8 relative">
                 <div class="relative">
                     <img id="project-image" src="./Assets/VisionAI-obj.png" alt="Project Image" class="w-full h-96 object-cover">
                     <!-- Dark overlay for better text visibility -->
@@ -172,46 +173,46 @@
                 <!-- Main Content -->
                 <div class="lg:col-span-2">
                     <!-- Project Overview -->
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+                    <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
                         <h2 class="text-2xl font-bold mb-4 flex items-center">
                             <i class="fas fa-info-circle mr-3 text-indigo-600"></i>
                             Project Overview
                         </h2>
                         <div id="project-overview">
-                            <p class="text-gray-600 dark:text-gray-400">Loading overview...</p>
+                            <p class="text-gray-600">Loading overview...</p>
                         </div>
                     </div>
 
                     <!-- Key Features -->
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+                    <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
                         <h2 class="text-2xl font-bold mb-4 flex items-center">
                             <i class="fas fa-star mr-3 text-indigo-600"></i>
                             Key Features
                         </h2>
                         <div id="project-features" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <p class="text-gray-600 dark:text-gray-400">Loading features...</p>
+                            <p class="text-gray-600">Loading features...</p>
                         </div>
                     </div>
 
                     <!-- Technical Implementation -->
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+                    <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
                         <h2 class="text-2xl font-bold mb-4 flex items-center">
                             <i class="fas fa-code mr-3 text-indigo-600"></i>
                             Technical Implementation
                         </h2>
                         <div id="project-implementation">
-                            <p class="text-gray-600 dark:text-gray-400">Loading implementation details...</p>
+                            <p class="text-gray-600">Loading implementation details...</p>
                         </div>
                     </div>
 
                     <!-- Project Gallery -->
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                    <div class="bg-white rounded-lg shadow-lg p-6">
                         <h2 class="text-2xl font-bold mb-4 flex items-center">
                             <i class="fas fa-images mr-3 text-indigo-600"></i>
                             Project Gallery
                         </h2>
-                        <div id="project-gallery" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <p class="text-gray-600 dark:text-gray-400">Loading gallery...</p>
+                        <div id="project-gallery" class="grid grid-cols-1 gap-4">
+                            <p class="text-gray-600">Loading gallery...</p>
                         </div>
                     </div>
                 </div>
@@ -219,33 +220,33 @@
                 <!-- Sidebar -->
                 <div class="lg:col-span-1">
                     <!-- Project Info -->
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
+                    <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
                         <h3 class="text-xl font-bold mb-4">Project Information</h3>
                         <div id="project-info" class="space-y-3">
-                            <p class="text-gray-600 dark:text-gray-400">Loading project information...</p>
+                            <p class="text-gray-600">Loading project information...</p>
                         </div>
                     </div>
 
                     <!-- Technologies Used -->
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
+                    <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
                         <h3 class="text-xl font-bold mb-4">Technologies Used</h3>
                         <div id="project-technologies" class="flex flex-wrap gap-2">
-                            <p class="text-gray-600 dark:text-gray-400">Loading technologies...</p>
+                            <p class="text-gray-600">Loading technologies...</p>
                         </div>
                     </div>
 
                     <!-- Project Links -->
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
+                    <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
                         <h3 class="text-xl font-bold mb-4">Project Links</h3>
                         <div id="project-links" class="space-y-3">
-                            <p class="text-gray-600 dark:text-gray-400">Loading links...</p>
+                            <p class="text-gray-600">Loading links...</p>
                         </div>
                     </div>
 
                     <!-- Contact for Project -->
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                    <div class="bg-white rounded-lg shadow-lg p-6">
                         <h3 class="text-xl font-bold mb-4">Interested in This Project?</h3>
-                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                        <p class="text-gray-600 mb-4">
                             Want to know more about this project or discuss similar work? Let's connect!
                         </p>
                         <a href="index.html#contact" class="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 transition duration-300 flex items-center justify-center">
@@ -254,6 +255,21 @@
                         </a>
                     </div>
                 </div>
+            </div>
+
+            <!-- Related Projects -->
+            <div class="mt-16">
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h2 class="text-3xl font-bold mb-2">Other Projects</h2>
+                        <div class="w-24 h-1 bg-indigo-600"></div>
+                    </div>
+                    <a href="index.html#projects" class="hidden md:inline-flex items-center text-indigo-600 hover:text-indigo-700 transition duration-300">
+                        View All Projects
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                <div id="related-projects" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
             </div>
         </div>
     </section>
@@ -289,212 +305,7 @@
     </a>
 
     <script>
-        // Project data (add images array for gallery)
-        const projectData = {
-            'visionai': {
-                title: 'VisionAI - Real-time Object Detection',
-                description: 'Advanced computer vision application with machine learning capabilities',
-                image: './Assets/VisionAI-obj.png',
-                images: [
-                    './Assets/VisionAI-obj.png',
-                    './Assets/visionai-extra1.png',
-                    './Assets/visionai-extra2.png'
-                ],
-                status: 'Completed',
-                duration: '3 Months',
-                teamSize: '4 Members',
-                role: 'Full Stack Developer',
-                technologies: ['HTML5', 'CSS3', 'JavaScript', 'Tailwind CSS', 'Flask', 'Python', 'YOLO', 'OpenCV'],
-                overview: `VisionAI is a cutting-edge web application that leverages YOLO (You Only Look Once) deep learning model 
-                          to perform real-time object detection. The application features an intuitive web interface built with 
-                          Flask and provides adjustable accuracy rates to suit different use cases. This project demonstrates 
-                          the practical implementation of computer vision technology in web applications, making advanced AI 
-                          capabilities accessible through a user-friendly interface.`,
-                features: [
-                    { icon: 'fas fa-camera', title: 'Real-time Detection', desc: 'Live object detection from webcam feed' },
-                    { icon: 'fas fa-sliders-h', title: 'Adjustable Accuracy', desc: 'Customizable detection threshold' },
-                    { icon: 'fas fa-upload', title: 'Image Upload', desc: 'Process static images' },
-                    { icon: 'fas fa-mobile-alt', title: 'Responsive Design', desc: 'Works on all devices' }
-                ],
-                implementation: `
-                    <div class="space-y-4">
-                        <div>
-                            <h3 class="font-semibold text-lg mb-2">Backend Architecture</h3>
-                            <p class="text-gray-600 dark:text-gray-400 mb-2">
-                                Built with Flask framework providing RESTful API endpoints for image processing and model inference.
-                            </p>
-                            <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-1">
-                                <li>YOLO model integration for object detection</li>
-                                <li>OpenCV for image processing</li>
-                                <li>Real-time video streaming capabilities</li>
-                                <li>Error handling and validation</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold text-lg mb-2">Frontend Development</h3>
-                            <p class="text-gray-600 dark:text-gray-400 mb-2">
-                                Modern, responsive interface using HTML5, CSS3, and JavaScript with Tailwind CSS for styling.
-                            </p>
-                            <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-1">
-                                <li>Interactive controls for accuracy adjustment</li>
-                                <li>Real-time video preview</li>
-                                <li>Drag-and-drop file upload</li>
-                                <li>Loading states and progress indicators</li>
-                            </ul>
-                        </div>
-                    </div>
-                `,
-                github: 'https://github.com/ali0454hassan/VisionAi',
-                demo: '#'
-            },
-            'weather': {
-                title: 'Weather App - Real-time Weather Forecast',
-                description: 'A comprehensive weather application with location search and predictions',
-                image: './Assets/weather-app.png',
-                status: 'Completed',
-                duration: '2 Months',
-                teamSize: '1 Member',
-                role: 'Frontend Developer',
-                technologies: ['HTML5', 'CSS3', 'JavaScript', 'Weather API', 'Bootstrap'],
-                overview: `A responsive weather application that provides real-time weather information and 5-day forecasts. 
-                          Features location search, current conditions, and beautiful weather visualizations. Built with 
-                          vanilla JavaScript and integrates with OpenWeatherMap API for accurate weather data.`,
-                features: [
-                    { icon: 'fas fa-search', title: 'Location Search', desc: 'Search weather by city name' },
-                    { icon: 'fas fa-cloud-sun', title: '5-Day Forecast', desc: 'Extended weather predictions' },
-                    { icon: 'fas fa-thermometer-half', title: 'Detailed Info', desc: 'Temperature, humidity, wind speed' },
-                    { icon: 'fas fa-mobile-alt', title: 'Mobile Friendly', desc: 'Responsive design for all devices' }
-                ],
-                implementation: `
-                    <div class="space-y-4">
-                        <div>
-                            <h3 class="font-semibold text-lg mb-2">API Integration</h3>
-                            <p class="text-gray-600 dark:text-gray-400 mb-2">
-                                Integrated OpenWeatherMap API for real-time weather data and forecasts.
-                            </p>
-                            <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-1">
-                                <li>Current weather conditions</li>
-                                <li>5-day weather forecast</li>
-                                <li>Geolocation support</li>
-                                <li>Error handling for API failures</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold text-lg mb-2">User Interface</h3>
-                            <p class="text-gray-600 dark:text-gray-400 mb-2">
-                                Clean, intuitive interface with weather icons and smooth animations.
-                            </p>
-                            <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-1">
-                                <li>Weather condition icons</li>
-                                <li>Temperature charts</li>
-                                <li>Search functionality</li>
-                                <li>Loading animations</li>
-                            </ul>
-                        </div>
-                    </div>
-                `,
-                github: '#',
-                demo: 'https://ali0454hassan.github.io/weather/'
-            },
-            'fitness': {
-                title: 'Fitness Tracker - Workout Progress App',
-                description: 'A comprehensive fitness tracking application with charts',
-                image: './Assets/fitness-app.webp',
-                status: 'Work in Progress',
-                duration: '4 Months',
-                teamSize: '2 Members',
-                role: 'Full Stack Developer',
-                technologies: ['HTML5', 'CSS3', 'JavaScript', 'Chart.js', 'Node.js', 'MongoDB'],
-                overview: `A comprehensive fitness tracking application that helps users monitor their workout progress, 
-                          set goals, and visualize their fitness journey. Features workout logging, progress charts, 
-                          and goal tracking with an intuitive dashboard.`,
-                features: [
-                    { icon: 'fas fa-chart-line', title: 'Progress Charts', desc: 'Visual progress tracking' },
-                    { icon: 'fas fa-dumbbell', title: 'Workout Logging', desc: 'Log exercises and sets' },
-                    { icon: 'fas fa-target', title: 'Goal Setting', desc: 'Set and track fitness goals' },
-                    { icon: 'fas fa-calendar', title: 'Workout Calendar', desc: 'Schedule and plan workouts' }
-                ],
-                implementation: `
-                    <div class="space-y-4">
-                        <div>
-                            <h3 class="font-semibold text-lg mb-2">Data Visualization</h3>
-                            <p class="text-gray-600 dark:text-gray-400 mb-2">
-                                Interactive charts and graphs for tracking fitness progress over time.
-                            </p>
-                            <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-1">
-                                <li>Chart.js for progress visualization</li>
-                                <li>Weight tracking graphs</li>
-                                <li>Workout frequency charts</li>
-                                <li>Goal achievement metrics</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold text-lg mb-2">Backend Services</h3>
-                            <p class="text-gray-600 dark:text-gray-400 mb-2">
-                                Node.js backend with MongoDB for data persistence and user management.
-                            </p>
-                            <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-1">
-                                <li>User authentication system</li>
-                                <li>Workout data storage</li>
-                                <li>Progress calculation algorithms</li>
-                                <li>RESTful API endpoints</li>
-                            </ul>
-                        </div>
-                    </div>
-                `,
-                github: '#',
-                demo: '#'
-            },
-            'ecommerce': {
-                title: 'E-commerce Website - Online Store',
-                description: 'Full-featured online store with shopping cart',
-                image: './Assets/igor-miske-JVSgcV8_vb4-unsplash.jpg',
-                status: 'Work in Progress',
-                duration: '6 Months',
-                teamSize: '3 Members',
-                role: 'Full Stack Developer',
-                technologies: ['HTML5', 'CSS3', 'JavaScript', 'React', 'Node.js', 'MongoDB', 'Stripe'],
-                overview: `A full-featured e-commerce platform with product catalog, shopping cart, user authentication, 
-                          and secure payment processing. Built with React frontend and Node.js backend, featuring 
-                          modern design and smooth user experience.`,
-                features: [
-                    { icon: 'fas fa-shopping-cart', title: 'Shopping Cart', desc: 'Add, remove, and manage items' },
-                    { icon: 'fas fa-credit-card', title: 'Secure Payments', desc: 'Stripe payment integration' },
-                    { icon: 'fas fa-user', title: 'User Accounts', desc: 'Registration and profile management' },
-                    { icon: 'fas fa-search', title: 'Product Search', desc: 'Advanced search and filtering' }
-                ],
-                implementation: `
-                    <div class="space-y-4">
-                        <div>
-                            <h3 class="font-semibold text-lg mb-2">Frontend Development</h3>
-                            <p class="text-gray-600 dark:text-gray-400 mb-2">
-                                Modern React application with responsive design and smooth user interactions.
-                            </p>
-                            <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-1">
-                                <li>React with hooks for state management</li>
-                                <li>Responsive product catalog</li>
-                                <li>Shopping cart functionality</li>
-                                <li>User authentication forms</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold text-lg mb-2">Backend Architecture</h3>
-                            <p class="text-gray-600 dark:text-gray-400 mb-2">
-                                Robust Node.js backend with MongoDB database and secure payment processing.
-                            </p>
-                            <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-1">
-                                <li>RESTful API with Express.js</li>
-                                <li>MongoDB for data storage</li>
-                                <li>Stripe payment integration</li>
-                                <li>JWT authentication</li>
-                            </ul>
-                        </div>
-                    </div>
-                `,
-                github: '#',
-                demo: '#'
-            }
-        };
+        const projectData = window.getAllProjects ? window.getAllProjects() : window.projectData;
 
         // Get project from URL parameter
         const urlParams = new URLSearchParams(window.location.search);
@@ -506,6 +317,7 @@
             if (!project) {
                 document.getElementById('project-title').textContent = 'Project Not Found';
                 document.getElementById('project-description').textContent = 'The requested project could not be found.';
+                document.getElementById('related-projects').innerHTML = '';
                 return;
             }
             
@@ -572,80 +384,291 @@
                 </a>
             `;
             
-            // Gallery (multiple images)
-            if (project.images && project.images.length > 0) {
-                document.getElementById('project-gallery').innerHTML = project.images.map((img, idx) => `
-                    <div class="relative group">
-                        <img src="${img}" alt="Gallery Image ${idx+1}" class="w-full h-56 object-cover rounded shadow transition duration-300 cursor-pointer hover:scale-105"
-                            onclick="openGalleryModal('${img}')"
-                        >
+            // Gallery (multiple images) — support `gallery` or legacy `images` key
+            const galleryImages = project.gallery || project.images || [];
+            // expose for lightbox
+            window.currentGallery = galleryImages;
+            if (galleryImages.length > 0) {
+                // render a responsive carousel (3-up on desktop, 2-up tablet, 1-up mobile)
+                document.getElementById('project-gallery').innerHTML = `
+                    <div class="relative">
+                        <button id="carousel-prev" class="absolute left-0 top-1/2 transform -translate-y-1/2 z-20 bg-white dark:bg-gray-800 bg-opacity-80 p-2 rounded-full shadow">&#8249;</button>
+                        <div id="carousel-viewport" class="overflow-hidden rounded">
+                            <div id="carousel-track" class="flex transition-transform duration-300"></div>
+                        </div>
+                        <button id="carousel-next" class="absolute right-0 top-1/2 transform -translate-y-1/2 z-20 bg-white dark:bg-gray-800 bg-opacity-80 p-2 rounded-full shadow">&#8250;</button>
+                    </div>
+                `;
+                const track = document.getElementById('carousel-track');
+                track.innerHTML = galleryImages.map((img, idx) => `
+                    <div class="carousel-item flex-shrink-0 px-2">
+                        <img src="${img}" alt="Gallery Image ${idx+1}" data-idx="${idx}" class="w-full h-56 object-cover rounded shadow cursor-pointer" onclick="openGalleryModal(${idx})">
                     </div>
                 `).join('');
+
+                // initialize carousel behavior
+                initGalleryCarousel();
             } else {
                 document.getElementById('project-gallery').innerHTML = `<p class="text-gray-600 dark:text-gray-400">No gallery images available.</p>`;
             }
+
+            renderRelatedProjects(id);
+        }
+
+        function renderRelatedProjects(currentProjectId) {
+            const relatedProjects = Object.entries(projectData)
+                .filter(([projectId]) => projectId !== currentProjectId)
+                .slice(0, 3);
+
+            const relatedProjectsContainer = document.getElementById('related-projects');
+            if (!relatedProjectsContainer) {
+                return;
+            }
+
+            relatedProjectsContainer.innerHTML = relatedProjects.map(([projectId, project]) => {
+                const statusColor = project.status === 'Completed'
+                    ? 'text-green-600 dark:text-green-400'
+                    : 'text-yellow-600 dark:text-yellow-400';
+                const previewTechnologies = project.technologies.slice(0, 4).map(tech => `
+                    <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-xs">${tech}</span>
+                `).join('');
+
+                return `
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden project-card h-full flex flex-col">
+                        <img src="${project.image}" alt="${project.title}" class="w-full h-52 object-cover" loading="lazy" decoding="async">
+                        <div class="p-6 flex-1 flex flex-col">
+                            <h3 class="text-xl font-bold mb-2">${project.title}</h3>
+                            <p class="text-gray-600 dark:text-gray-400 mb-4">${project.description}</p>
+                            <p class="text-sm font-semibold mb-4">
+                                <span class="text-gray-600 dark:text-gray-300">Status:</span>
+                                <span class="${statusColor}">${project.status}</span>
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                ${previewTechnologies}
+                            </div>
+                            <div class="mt-auto flex justify-end">
+                                <a href="project-details.html?project=${projectId}" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition duration-300 text-sm">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
 
         // Gallery Modal (inside card size)
-        function openGalleryModal(imgSrc) {
-            // Create modal if not exists
+        // Lightbox modal with prev/next and zoom
+        window.modalScale = 1;
+        function buildGalleryModal() {
             let modal = document.getElementById('gallery-modal');
-            if (!modal) {
-                modal = document.createElement('div');
-                modal.id = 'gallery-modal';
-                modal.className = 'fixed inset-0 flex items-center justify-center z-50';
-                modal.innerHTML = `
-                    <div class="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-4 relative max-w-lg w-full flex flex-col items-center">
-                        <button onclick="closeGalleryModal()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl">&times;</button>
-                        <img id="gallery-modal-img" src="${imgSrc}" class="max-h-80 w-auto rounded shadow mb-2" />
+            if (modal) return modal;
+            modal = document.createElement('div');
+            modal.id = 'gallery-modal';
+            modal.className = 'fixed inset-0 flex items-center justify-center z-50';
+            modal.style.display = 'none';
+            modal.innerHTML = `
+                <div class="absolute inset-0 bg-black bg-opacity-70" id="gallery-modal-overlay"></div>
+                <div class="relative max-w-6xl w-full mx-4">
+                    <button id="gallery-close" class="absolute top-2 right-2 text-white text-3xl z-50 bg-black bg-opacity-30 rounded-full w-10 h-10 flex items-center justify-center">&times;</button>
+                    <button id="gallery-prev" class="absolute left-2 top-1/2 transform -translate-y-1/2 text-white text-3xl z-50 bg-black bg-opacity-30 rounded-full w-10 h-10 flex items-center justify-center">&#8249;</button>
+                    <button id="gallery-next" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-white text-3xl z-50 bg-black bg-opacity-30 rounded-full w-10 h-10 flex items-center justify-center">&#8250;</button>
+                    <div class="bg-white dark:bg-gray-900 rounded-md overflow-hidden p-4 flex items-center justify-center">
+                        <img id="gallery-modal-img" src="" class="max-h-[80vh] max-w-full object-contain transform" style="transition: transform 0.2s ease;" />
                     </div>
-                    <div class="fixed inset-0 bg-black bg-opacity-60" onclick="closeGalleryModal()"></div>
-                `;
-                document.body.appendChild(modal);
-            } else {
-                document.getElementById('gallery-modal-img').src = imgSrc;
+                    <div class="flex justify-center gap-2 mt-3">
+                        <button id="zoom-out" class="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded">-</button>
+                        <button id="zoom-fit" class="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded">Fit</button>
+                        <button id="zoom-in" class="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded">+</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+
+            document.getElementById('gallery-close').addEventListener('click', closeGalleryModal);
+            document.getElementById('gallery-prev').addEventListener('click', () => changeGallery(-1));
+            document.getElementById('gallery-next').addEventListener('click', () => changeGallery(1));
+            document.getElementById('zoom-in').addEventListener('click', () => setModalZoom(window.modalScale + 0.25));
+            document.getElementById('zoom-out').addEventListener('click', () => setModalZoom(Math.max(0.25, window.modalScale - 0.25)));
+            document.getElementById('zoom-fit').addEventListener('click', () => setModalZoom(1));
+
+            // overlay click closes
+            document.getElementById('gallery-modal-overlay').addEventListener('click', closeGalleryModal);
+
+            // wheel to zoom
+            const imgEl = document.getElementById('gallery-modal-img');
+            imgEl.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                const delta = e.deltaY > 0 ? -0.1 : 0.1;
+                setModalZoom(Math.max(0.25, window.modalScale + delta));
+            });
+
+            // keyboard
+            window.addEventListener('keydown', (e) => {
+                if (!modal || modal.style.display === 'none') return;
+                if (e.key === 'Escape') closeGalleryModal();
+                if (e.key === 'ArrowLeft') changeGallery(-1);
+                if (e.key === 'ArrowRight') changeGallery(1);
+                if (e.key === '+') setModalZoom(window.modalScale + 0.25);
+                if (e.key === '-') setModalZoom(Math.max(0.25, window.modalScale - 0.25));
+            });
+
+            return modal;
+        }
+
+        function openGalleryModal(index) {
+            const modal = buildGalleryModal();
+            window.currentGalleryIndex = index || 0;
+            const imgSrc = window.currentGallery && window.currentGallery[window.currentGalleryIndex];
+            const imgEl = document.getElementById('gallery-modal-img');
+            if (imgSrc) {
+                imgEl.src = imgSrc;
+                setModalZoom(1);
                 modal.style.display = 'flex';
+                // ensure focus
+                imgEl.focus && imgEl.focus();
             }
         }
+
+        function changeGallery(delta) {
+            if (!window.currentGallery || window.currentGallery.length === 0) return;
+            window.currentGalleryIndex = (window.currentGalleryIndex + delta + window.currentGallery.length) % window.currentGallery.length;
+            const imgSrc = window.currentGallery[window.currentGalleryIndex];
+            const imgEl = document.getElementById('gallery-modal-img');
+            imgEl.src = imgSrc;
+            setModalZoom(1);
+        }
+
+        function setModalZoom(scale) {
+            window.modalScale = scale;
+            const imgEl = document.getElementById('gallery-modal-img');
+            if (imgEl) imgEl.style.transform = `scale(${scale})`;
+        }
+
         function closeGalleryModal() {
             const modal = document.getElementById('gallery-modal');
             if (modal) modal.style.display = 'none';
         }
 
+        // Carousel: show multiple slides at once and allow sliding
+        let carouselState = { index: 0, visible: 3 };
+        function getVisibleCount() {
+            const w = window.innerWidth;
+            if (w < 640) return 1; // mobile
+            if (w < 1024) return 2; // tablet
+            return 3; // desktop
+        }
+
+        function initGalleryCarousel() {
+            const track = document.getElementById('carousel-track');
+            if (!track) return;
+            carouselState.visible = getVisibleCount();
+            const items = Array.from(track.children);
+            const viewport = document.getElementById('carousel-viewport');
+
+            // set item width
+            const percent = 100 / carouselState.visible;
+            items.forEach(it => {
+                it.style.width = percent + '%';
+            });
+
+            // attach buttons
+            document.getElementById('carousel-prev').onclick = () => slideCarousel(-1);
+            document.getElementById('carousel-next').onclick = () => slideCarousel(1);
+
+            // reset index if out of range
+            carouselState.index = Math.min(carouselState.index, Math.max(0, items.length - carouselState.visible));
+            updateCarousel();
+
+            // responsive
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    const newVisible = getVisibleCount();
+                    if (newVisible !== carouselState.visible) {
+                        carouselState.visible = newVisible;
+                        const p = 100 / carouselState.visible;
+                        items.forEach(it => it.style.width = p + '%');
+                        carouselState.index = Math.min(carouselState.index, Math.max(0, items.length - carouselState.visible));
+                        updateCarousel();
+                    }
+                }, 120);
+            });
+
+            // optional: swipe support for touch
+            let startX = 0;
+            let isTouch = false;
+            viewport.addEventListener('touchstart', (e) => { isTouch = true; startX = e.touches[0].clientX; });
+            viewport.addEventListener('touchmove', (e) => { if (!isTouch) return; const dx = e.touches[0].clientX - startX; if (Math.abs(dx) > 50) { if (dx < 0) slideCarousel(1); else slideCarousel(-1); isTouch = false; } });
+            viewport.addEventListener('touchend', () => { isTouch = false; });
+        }
+
+        function slideCarousel(direction) {
+            const track = document.getElementById('carousel-track');
+            if (!track) return;
+            const items = track.children.length;
+            const maxIndex = Math.max(0, items - carouselState.visible);
+            carouselState.index = Math.min(maxIndex, Math.max(0, carouselState.index + direction));
+            updateCarousel();
+        }
+
+        function updateCarousel() {
+            const track = document.getElementById('carousel-track');
+            if (!track) return;
+            const translate = -(carouselState.index * (100 / carouselState.visible));
+            track.style.transform = `translateX(${translate}%)`;
+        }
+
+        function setupProjectSearch() {
+            const desktopInput = document.getElementById('site-search-input');
+            const desktopButton = document.getElementById('site-search-button');
+            const mobileInput = document.getElementById('site-search-input-mobile');
+            const mobileButton = document.getElementById('site-search-button-mobile');
+
+            const performSearch = (rawValue) => {
+                const query = (rawValue || '').trim().toLowerCase();
+                if (!query) return;
+
+                const currentPageTargets = Array.from(document.querySelectorAll('h1, h2, h3, p, li, a'));
+                const textMatch = currentPageTargets.find(node => (node.innerText || '').toLowerCase().includes(query));
+                const relatedProject = Array.from(document.querySelectorAll('#related-projects .project-card')).find(card =>
+                    (card.innerText || '').toLowerCase().includes(query)
+                );
+
+                if (relatedProject) {
+                    relatedProject.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    return;
+                }
+
+                if (textMatch) {
+                    textMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    return;
+                }
+
+                alert('No matching content found.');
+            };
+
+            const bindSearch = (inputEl, buttonEl) => {
+                if (!inputEl || !buttonEl) return;
+                buttonEl.addEventListener('click', () => performSearch(inputEl.value));
+                inputEl.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        performSearch(inputEl.value);
+                    }
+                });
+            };
+
+            bindSearch(desktopInput, desktopButton);
+            bindSearch(mobileInput, mobileButton);
+        }
+
         // Load project on page load
         window.onload = function() {
             loadProject(projectId);
+            setupProjectSearch();
         };
-
-        // Dark mode toggle logic with localStorage
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const darkModeIcon = document.getElementById('darkModeIcon');
-
-        // Apply dark mode from localStorage on page load
-        if (localStorage.getItem('dark-mode') === 'enabled') {
-            document.body.classList.add('dark-mode');
-            darkModeIcon.classList.remove('fa-moon');
-            darkModeIcon.classList.add('fa-sun');
-        } else {
-            document.body.classList.remove('dark-mode');
-            darkModeIcon.classList.remove('fa-sun');
-            darkModeIcon.classList.add('fa-moon');
-        }
-
-        // Toggle dark mode and save to localStorage
-        darkModeToggle.addEventListener('click', function() {
-            document.body.classList.toggle('dark-mode');
-            const isDark = document.body.classList.contains('dark-mode');
-            if (isDark) {
-                localStorage.setItem('dark-mode', 'enabled');
-                darkModeIcon.classList.remove('fa-moon');
-                darkModeIcon.classList.add('fa-sun');
-            } else {
-                localStorage.setItem('dark-mode', 'disabled');
-                darkModeIcon.classList.remove('fa-sun');
-                darkModeIcon.classList.add('fa-moon');
-            }
-        });
     </script>
 </body>
 </html>

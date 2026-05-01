@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const cursorBlob = document.querySelector('.cursor-blob');
 
+    renderProjectGrid();
+
     if (cursorBlob) {
         document.addEventListener('mousemove', (e) => {
             cursorBlob.style.left = e.clientX + 'px';
@@ -64,6 +66,52 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+function renderProjectGrid() {
+    const projectsGrid = document.getElementById('projects-grid');
+    const projects = window.getAllProjects ? window.getAllProjects() : window.projectData;
+
+    if (!projectsGrid || !projects) {
+        return;
+    }
+
+    projectsGrid.innerHTML = Object.entries(projects).map(([projectId, project]) => {
+        const statusColor = project.status === 'Completed'
+            ? 'text-green-600'
+            : 'text-yellow-600';
+        const skillBadges = (project.skills || project.technologies.slice(0, 5)).map(skill => `
+            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">${skill}</span>
+        `).join('');
+        const demoLink = project.demo || '#';
+        const codeLink = project.github || '#';
+        const demoTarget = demoLink.startsWith('http') ? '_blank' : '_self';
+        const codeTarget = codeLink.startsWith('http') ? '_blank' : '_self';
+
+        return `
+            <div class="bg-white rounded-lg overflow-hidden shadow-lg project-card h-full flex flex-col">
+                <img src="${project.image}" alt="${project.title}" class="w-full h-50 object-cover" loading="lazy" decoding="async">
+                <div class="p-6 flex-1 flex flex-col">
+                    <h3 class="text-xl font-bold mb-2">${project.title}</h3>
+                    <p class="text-gray-600 mb-4">${project.description}</p>
+                    <p class="text-sm font-semibold mb-4">
+                        <span class="text-gray-600">Status:</span>
+                        <span class="${statusColor}">${project.status}</span>
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        ${skillBadges}
+                    </div>
+                    <div class="mt-auto pt-2 flex justify-between items-center gap-4">
+                        <div class="flex space-x-2">
+                            <a href="${demoLink}" class="text-indigo-600 hover:underline text-sm" target="${demoTarget}">Demo</a>
+                            <a href="${codeLink}" class="text-indigo-600 hover:underline text-sm" target="${codeTarget}">Code</a>
+                        </div>
+                        <a href="project-details.html?project=${projectId}" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition duration-300 text-sm">View Details</a>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
 
 function animateSections() {
     const sections = document.querySelectorAll('section');
@@ -160,13 +208,59 @@ function highlightActiveNavLink() {
         });
 
         navLinks.forEach(link => {
-            link.classList.remove('text-indigo-600', 'dark:text-indigo-400');
+            link.classList.remove('text-indigo-600');
             if (link.getAttribute('href') === `#${current}`) {
-                link.classList.add('text-indigo-600', 'dark:text-indigo-400');
+                    link.classList.add('text-indigo-600');
             }
         });
     });
 }
+
+    function setupSiteSearch() {
+        const desktopInput = document.getElementById('site-search-input');
+        const desktopButton = document.getElementById('site-search-button');
+        const mobileInput = document.getElementById('site-search-input-mobile');
+        const mobileButton = document.getElementById('site-search-button-mobile');
+
+        const performSearch = (rawValue) => {
+            const query = (rawValue || '').trim().toLowerCase();
+            if (!query) return;
+
+            const sectionMatch = Array.from(document.querySelectorAll('section')).find(section =>
+                (section.innerText || '').toLowerCase().includes(query)
+            );
+
+            const projectMatch = Array.from(document.querySelectorAll('#projects-grid .project-card, #related-projects .project-card')).find(card =>
+                (card.innerText || '').toLowerCase().includes(query)
+            );
+
+            if (projectMatch) {
+                projectMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            if (sectionMatch) {
+            sectionMatch.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            return;
+        }
+
+            alert('No matching content found.');
+        };
+
+        const bindSearch = (inputEl, buttonEl) => {
+            if (!inputEl || !buttonEl) return;
+            buttonEl.addEventListener('click', () => performSearch(inputEl.value));
+            inputEl.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    performSearch(inputEl.value);
+                }
+            });
+        };
+
+        bindSearch(desktopInput, desktopButton);
+        bindSearch(mobileInput, mobileButton);
+    }
 
 document.addEventListener('DOMContentLoaded', () => {
     animateSections();
@@ -191,16 +285,5 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(typeWriter, 500);
     }
 
-    const darkModeData = document.querySelector('[x-data]').__x.$data;
-    const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-
-    if (savedDarkMode) {
-        darkModeData.darkMode = true;
-        document.documentElement.classList.add('dark');
-    }
-
-    const darkModeToggle = document.querySelector('[x-data] button');
-    darkModeToggle.addEventListener('click', () => {
-        localStorage.setItem('darkMode', darkModeData.darkMode);
-    });
+    setupSiteSearch();
 });
