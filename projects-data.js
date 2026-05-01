@@ -107,8 +107,8 @@ window.baseProjectData = {
     alilight: {
         title: 'Ali Light Decoration',
         description: 'Business website showcasing event lighting services, gallery, and enquiry/booking forms',
-        image: './Assets/ali-light h.png',
-        gallery: ['./Assets/Ali-light h.png', './Assets/Ali-light-c.png', './Assets/Ali-light-f.png', './Assets/Ali-light-g.png', './Assets/Ali-light-w.png'],
+        image: './Assets/Ali-light-h.png',
+        gallery: ['./Assets/Ali-light-h.png', './Assets/Ali-light-c.png', './Assets/Ali-light-f.png', './Assets/Ali-light-g.png', './Assets/Ali-light-w.png'],
         status: 'Completed',
         duration: '1 Week',
         teamSize: '1 Member',
